@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-base text-ink font-body antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+  ::selection {
+    background-color: theme('colors.accent.violet');
+    color: theme('colors.base.DEFAULT');
+  }
+}
+
+@layer components {
+  /* Signature "keycap" surface used for product cards, buttons, and panels.
+     A subtle inset bevel evokes a physical mechanical key; the gradient
+     border appears only on hover/focus, like a keyswitch lighting up. */
+  .keycap {
+    @apply relative bg-base-raised border border-base-border rounded-keycap shadow-keycap transition-all duration-200;
+  }
+  .keycap:hover {
+    @apply shadow-keycap-glow border-accent-violet/40 -translate-y-0.5;
+  }
+
+  .glow-text {
+    background: linear-gradient(135deg, #7C5CFC 0%, #3DF2C4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
