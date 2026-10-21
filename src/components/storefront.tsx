@@ -4,7 +4,8 @@ import type { ParallaxLayer } from "@/components/parallax-hero";
 import { HeroCarousel } from "@/components/hero-carousel";
 import { DepartmentRow } from "@/components/department-row";
 import { ImageMosaic } from "@/components/image-mosaic";
-import { ProductCatalog } from "@/components/product-catalog";
+import { GearEdit } from "@/components/gear-edit";
+import { SaleBanner } from "@/components/sale-banner";
 import type { ProductWithPrice } from "@/types";
 
 const heroLayers: ParallaxLayer[] = [
@@ -30,10 +31,9 @@ const heroLayers: ParallaxLayer[] = [
 
 interface StorefrontProps {
   products: ProductWithPrice[];
-  initialCategory?: string;
 }
 
-export function Storefront({ products, initialCategory }: StorefrontProps) {
+export function Storefront({ products }: StorefrontProps) {
   const parallaxContent = (
     <div className="grid items-center gap-10 lg:grid-cols-2">
       <div className="relative z-10 max-w-xl">
@@ -61,12 +61,9 @@ export function Storefront({ products, initialCategory }: StorefrontProps) {
 
       <ImageMosaic />
 
-      <section className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-xl font-semibold text-ink">Shop the catalog</h2>
-        </div>
-        <ProductCatalog products={products} initialCategory={initialCategory} />
-      </section>
+      <GearEdit products={products} />
+
+      <SaleBanner products={products} />
     </div>
   );
 }

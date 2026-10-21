@@ -31,6 +31,23 @@ export async function getInventory(productId: number): Promise<InventoryItem | n
 }
 
 /**
+ * Fetches every inventory record in one request for the collection filters.
+ * Returns null (not an empty array) when the Inventory Service is unreachable,
+ * so callers can hide availability filtering instead of showing everything as
+ * out of stock.
+ */
+export async function getAllInventory(): Promise<InventoryItem[] | null> {
+  try {
+    const res = await fetch(`${API.inventory}/api/inventory`, { cache: "no-store" });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return Array.isArray(data) ? (data as InventoryItem[]) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Fetches the product catalog and merges in each product's current price.
  * Product Service and Pricing Service are separate databases, so this
  * merge has to happen on the client (or a BFF layer, if we add one later).

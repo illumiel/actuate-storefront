@@ -73,61 +73,77 @@ export const mosaicTiles: MosaicTile[] = [
   },
 ];
 
-/** ISO timestamp the sale countdown targets (used by later homepage parts). */
+/**
+ * Demo value — edit by hand. The sale countdown targets this timestamp; if it
+ * is in the past (or unparseable) the countdown hides itself entirely.
+ */
 export const SALE_ENDS_AT = "2026-12-31T23:59:59+08:00";
 
 export interface CollectionCopy {
   title: string;
+  /** One concrete sentence about what actually differs within the collection. */
   description: string;
 }
 
+/** Banner title + sentence for every /collections/{slug} page. */
 export const collectionCopy: Record<CategorySlug | "all" | "sale", CollectionCopy> = {
   all: {
     title: "All gear",
-    description: "Every peripheral we carry, in one place.",
+    description:
+      "Everything we carry, in one place. Sort by price or discount to start comparing.",
   },
   sale: {
-    title: "On sale",
-    description: "Marked-down gear while stock lasts.",
+    title: "Sale",
+    description:
+      "Marked down while stock lasts. Everything here is already reduced.",
   },
   mouse: {
     title: "Mice",
-    description: "Sensors, shapes and weights for every grip.",
+    description:
+      "Weight, sensor and click latency are what separate these. Sorted so you can compare them.",
   },
   keyboard: {
     title: "Keyboards",
-    description: "Switch feel, layout and build, compared side by side.",
+    description:
+      "Switch type, layout and actuation force decide how a board feels. Start with the one you type on.",
   },
   headset: {
     title: "Headsets",
-    description: "Comfort and clarity for long sessions.",
+    description:
+      "Drivers, clamp force and mic pickup matter more than the spec sheet suggests.",
   },
   monitor: {
     title: "Monitors",
-    description: "Refresh rate and response time that keep up.",
+    description:
+      "Refresh rate, response time and panel type decide how motion reads on screen.",
   },
   controller: {
     title: "Controllers",
-    description: "Sticks, triggers and paddles for every input style.",
+    description:
+      "Stick tension, trigger travel and extra paddles change how your inputs land.",
   },
   mousepad: {
     title: "Mousepads",
-    description: "Surface and glide tuned to your sensor.",
+    description:
+      "Surface texture and thickness set your glide and your stopping power.",
   },
   microphone: {
     title: "Microphones",
-    description: "Clean capture for comms and streaming.",
+    description:
+      "Pickup pattern and mounting decide how clean you sound to everyone else.",
   },
   webcam: {
     title: "Webcams",
-    description: "Sharp, stable video without the fuss.",
+    description:
+      "Sensor size, frame rate and field of view keep you sharp on call.",
   },
   chair: {
     title: "Chairs",
-    description: "Support that holds up over a full day.",
+    description:
+      "Lumbar support, seat depth and armrest travel carry you through a long day.",
   },
   other: {
     title: "Other gear",
-    description: "Everything else in the lineup.",
+    description: "The rest of the lineup, in one place.",
   },
 };

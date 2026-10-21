@@ -10,6 +10,10 @@
   }
   body {
     @apply bg-base text-ink font-body antialiased;
+    /* The hero carousel is full-bleed (100vw); clip that sub-pixel overflow
+       instead of letting it create a horizontal scrollbar. `clip` (not hidden)
+       keeps position: sticky working for elements inside the page. */
+    overflow-x: clip;
   }
   h1, h2, h3, h4 {
     @apply font-display;
@@ -42,7 +46,13 @@
     @apply relative bg-base-raised border border-base-border rounded-keycap shadow-keycap transition-all duration-200;
   }
   .keycap:hover {
-    @apply shadow-keycap-glow border-accent-violet/40 -translate-y-0.5;
+    /* No translateY: cards must not move, otherwise the top border gets clipped
+       by horizontally scrolling containers and text misaligns with neighbours.
+       A 1px inset ring keeps the highlight fully inside the card's radius. */
+    @apply border-accent-violet/60;
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+      inset 0 0 0 1px rgba(124, 92, 252, 0.45);
   }
 
   .glow-text {
@@ -100,4 +110,78 @@
 
 .animate-order-ring {
   animation: order-ring 700ms ease-out both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 260ms ease-out both;
+}
+
+@keyframes pin-pulse {
+  from {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-pin-pulse {
+  animation: pin-pulse 2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pin-pulse {
+    animation: none;
+  }
+}
+
+/* Thin scrollbar for the sticky filters sidebar. */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.base.border') transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: theme('colors.base.border');
+  border-radius: 9999px;
+}
+
+@keyframes sort-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-sort-popover {
+  animation: sort-popover-in 150ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sort-popover {
+    animation: none;
+  }
 }

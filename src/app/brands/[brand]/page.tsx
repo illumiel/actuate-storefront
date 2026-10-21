@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getProductsWithPrices } from "@/lib/api";
 import { ParallaxHero, type ParallaxLayer } from "@/components/parallax-hero";
-import { ProductCatalog } from "@/components/product-catalog";
+import { CollectionView } from "@/components/collection-view";
 import { Button } from "@/components/ui/button";
 
 const heroLayers: ParallaxLayer[] = [
@@ -28,9 +28,16 @@ const heroLayers: ParallaxLayer[] = [
 
 export const dynamic = "force-dynamic";
 
+const NEW_BADGE_COUNT = 6;
+
 export default async function BrandPage({ params }: { params: { brand: string } }) {
   const brandSlug = decodeURIComponent(params.brand).toLowerCase();
   const products = await getProductsWithPrices();
+
+  const newestIds = [...products]
+    .sort((a, b) => b.id - a.id)
+    .slice(0, NEW_BADGE_COUNT)
+    .map((p) => p.id);
 
   const brandProducts = products.filter(
     (p) =>
@@ -86,7 +93,11 @@ export default async function BrandPage({ params }: { params: { brand: string } 
         <div className="flex items-center justify-between">
           <h2 className="font-display text-xl font-semibold text-ink">{exactBrand} Catalog</h2>
         </div>
-        <ProductCatalog products={brandProducts} />
+        <CollectionView
+          products={brandProducts}
+          newestIds={newestIds}
+          showBrandFilter={false}
+        />
       </section>
     </div>
   );

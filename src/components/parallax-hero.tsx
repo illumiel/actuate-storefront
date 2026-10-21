@@ -58,24 +58,28 @@ export function ParallaxHero({ children, layers, className }: ParallaxHeroProps)
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Parallax peripheral layers */}
-      {layers.map((layer, i) => (
-        <div
-          key={i}
-          className={cn("pointer-events-none absolute z-0 transition-transform duration-300 ease-out", layer.className)}
-          style={{
-            transform: `translate3d(${offset.x * layer.depth}px, ${offset.y * layer.depth}px, 0)`,
-          }}
-        >
-          <Image
-            src={layer.src}
-            alt={layer.alt}
-            fill
-            className="object-contain drop-shadow-2xl"
-            sizes="400px"
-          />
-        </div>
-      ))}
+      {/* Parallax peripheral layers. Kept inside the centered content column
+          (max-w-6xl) so the drifting shapes stay near the copy instead of
+          hugging the full-bleed viewport edges. */}
+      <div className="absolute inset-y-0 left-1/2 hidden w-full max-w-6xl -translate-x-1/2 px-6 sm:block">
+        {layers.map((layer, i) => (
+          <div
+            key={i}
+            className={cn("pointer-events-none absolute z-0 transition-transform duration-300 ease-out", layer.className)}
+            style={{
+              transform: `translate3d(${offset.x * layer.depth}px, ${offset.y * layer.depth}px, 0)`,
+            }}
+          >
+            <Image
+              src={layer.src}
+              alt={layer.alt}
+              fill
+              className="object-contain drop-shadow-2xl"
+              sizes="400px"
+            />
+          </div>
+        ))}
+      </div>
 
       {/* Foreground content, stays put */}
       <div className="relative">{children}</div>

@@ -3,7 +3,6 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { ParallaxHero, type ParallaxLayer } from "@/components/parallax-hero";
 import { heroSlides, type HeroSlide } from "@/lib/home-content";
 import { cn } from "@/lib/utils";
@@ -103,7 +102,10 @@ export function HeroCarousel({ layers, parallaxContent, className }: HeroCarouse
       onBlur={() => setPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className={cn("relative overflow-hidden outline-none", className)}
+      className={cn(
+        "relative left-1/2 w-screen -translate-x-1/2 overflow-hidden outline-none",
+        className
+      )}
     >
       <div
         className="flex min-h-[440px] transition-transform duration-500 ease-out motion-reduce:transition-none sm:min-h-[520px]"
@@ -123,9 +125,11 @@ export function HeroCarousel({ layers, parallaxContent, className }: HeroCarouse
               {slide.kind === "parallax" ? (
                 <ParallaxHero
                   layers={layers}
-                  className="h-full min-h-[440px] py-14 sm:py-20"
+                  className="h-full min-h-[440px] sm:min-h-[520px]"
                 >
-                  {parallaxContent}
+                  <div className="mx-auto w-full max-w-6xl px-6 py-16 sm:py-24">
+                    {parallaxContent}
+                  </div>
                 </ParallaxHero>
               ) : (
                 <ImageSlide slide={slide} active={active} priority={i === 1} />
@@ -135,16 +139,7 @@ export function HeroCarousel({ layers, parallaxContent, className }: HeroCarouse
         })}
       </div>
 
-      <button
-        type="button"
-        onClick={next}
-        aria-label="Next slide"
-        className="absolute right-3 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-base-border bg-base/50 text-ink backdrop-blur-sm transition-colors hover:border-accent-violet/50 hover:text-accent-violet sm:right-5"
-      >
-        <ChevronRight className="h-5 w-5" />
-      </button>
-
-      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2">
+      <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2">
         {heroSlides.map((slide, i) => (
           <button
             key={slide.id}
@@ -203,7 +198,7 @@ function ImageSlide({
         className="absolute inset-0 bg-gradient-to-t from-base via-base/60 to-base/10"
       />
 
-      <div className="relative z-10 w-full py-14 sm:py-20">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-6 py-16 sm:py-24">
         <div className="max-w-xl">
           {slide.eyebrow && (
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent-cyan">

@@ -4,6 +4,7 @@ import { CartProvider } from "@/context/cart-context";
 import { ToastProvider } from "@/components/ui/toast";
 import { ProductModalProvider } from "@/components/product-modal-provider";
 import { Navbar } from "@/components/navbar";
+import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ProductModalProvider>
               <Navbar />
               <main className="mx-auto max-w-6xl px-6 py-10">{children}</main>
+              <SiteFooter />
             </ProductModalProvider>
           </ToastProvider>
         </CartProvider>
