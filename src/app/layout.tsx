@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import { CartProvider } from "@/context/cart-context";
-import { StoreProvider } from "@/context/store-context";
+import { ToastProvider } from "@/components/ui/toast";
+import { ProductModalProvider } from "@/components/product-modal-provider";
 import { Navbar } from "@/components/navbar";
 import "./globals.css";
 
@@ -26,10 +27,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable}`}>
       <body>
         <CartProvider>
-          <StoreProvider>
-            <Navbar />
-            <main className="mx-auto max-w-6xl px-6 py-10">{children}</main>
-          </StoreProvider>
+          <ToastProvider>
+            <ProductModalProvider>
+              <Navbar />
+              <main className="mx-auto max-w-6xl px-6 py-10">{children}</main>
+            </ProductModalProvider>
+          </ToastProvider>
         </CartProvider>
       </body>
     </html>

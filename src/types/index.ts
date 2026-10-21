@@ -37,6 +37,8 @@ export interface CartLine {
   name: string;
   imageUrl: string;
   unitPrice: number;
+  /** Base (pre-discount) price at the time of adding, used to show savings. */
+  originalPrice?: number;
   quantity: number;
 }
 
@@ -52,7 +54,7 @@ export interface OrderResponse {
   id: number;
   orderNumber: string;
   customerName: string;
-  customerEmail: string;
+  customerEmail?: string | null;
   status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
   totalAmount: number;
   items: OrderItemResponse[];

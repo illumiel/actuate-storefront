@@ -52,7 +52,8 @@ export async function getProductWithPrice(id: number): Promise<ProductWithPrice 
 
 export interface PlaceOrderPayload {
   customerName: string;
-  customerEmail: string;
+  /** Omitted entirely when the customer doesn't provide an email. */
+  customerEmail?: string;
   items: { productId: number; quantity: number }[];
 }
 

@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/cart-context";
 import type { ProductWithPrice } from "@/types";
 
-export function AddToCart({ product }: { product: ProductWithPrice }) {
+interface AddToCartProps {
+  product: ProductWithPrice;
+  /** Called after the "Added to cart" confirmation. Used by the modal to close and toast. */
+  onAdded?: () => void;
+}
+
+export function AddToCart({ product, onAdded }: AddToCartProps) {
   const { addItem } = useCart();
   const [quantity, setQuantity] = React.useState(1);
   const [added, setAdded] = React.useState(false);
@@ -22,11 +28,17 @@ export function AddToCart({ product }: { product: ProductWithPrice }) {
         name: product.name,
         imageUrl: product.imageUrl,
         unitPrice: product.price!.finalPrice,
+        originalPrice: product.price!.basePrice,
       },
       quantity
     );
     setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    // In the modal, close shortly after the confirmation; on a page, just reset.
+    const delay = onAdded ? 500 : 1500;
+    window.setTimeout(() => {
+      setAdded(false);
+      onAdded?.();
+    }, delay);
   };
 
   return (
@@ -34,14 +46,16 @@ export function AddToCart({ product }: { product: ProductWithPrice }) {
       <div className="flex items-center rounded-keycap border border-base-border bg-base-panel">
         <button
           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          className="flex h-11 w-10 items-center justify-center text-ink-muted hover:text-ink transition-colors"
+          className="flex h-11 w-10 items-center justify-center text-ink-muted transition-colors hover:text-ink"
+          aria-label="Decrease quantity"
         >
           <Minus className="h-3.5 w-3.5" />
         </button>
         <span className="w-8 text-center text-sm font-medium text-ink">{quantity}</span>
         <button
           onClick={() => setQuantity((q) => q + 1)}
-          className="flex h-11 w-10 items-center justify-center text-ink-muted hover:text-ink transition-colors"
+          className="flex h-11 w-10 items-center justify-center text-ink-muted transition-colors hover:text-ink"
+          aria-label="Increase quantity"
         >
           <Plus className="h-3.5 w-3.5" />
         </button>

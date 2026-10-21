@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { ProductCard } from "@/components/product-card";
-import { ProductModal } from "@/components/product-modal";
-import { useStore } from "@/context/store-context";
+import { useProductModal } from "@/components/product-modal-provider";
 import { cn } from "@/lib/utils";
 import type { ProductWithPrice } from "@/types";
 
@@ -23,19 +22,14 @@ interface ProductCatalogProps {
 }
 
 export function ProductCatalog({ products, initialCategory }: ProductCatalogProps) {
-  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(initialCategory ?? null);
-  const [selectedProduct, setSelectedProduct] = React.useState<ProductWithPrice | null>(null);
-  const { searchQuery } = useStore();
+  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(
+    initialCategory ?? null
+  );
+  const { openProduct } = useProductModal();
 
-  const query = searchQuery.trim().toLowerCase();
-
-  const filtered = products.filter((p) => {
-    const matchesCategory = selectedCategory ? p.category === selectedCategory : true;
-    const matchesSearch = query
-      ? p.name.toLowerCase().includes(query) || p.brand.toLowerCase().includes(query)
-      : true;
-    return matchesCategory && matchesSearch;
-  });
+  const filtered = selectedCategory
+    ? products.filter((p) => p.category === selectedCategory)
+    : products;
 
   return (
     <div className="space-y-6">
@@ -48,7 +42,7 @@ export function ProductCatalog({ products, initialCategory }: ProductCatalogProp
               key={cat.label}
               onClick={() => setSelectedCategory(cat.value)}
               className={cn(
-                "rounded-keycap border px-4 py-2 text-sm font-medium transition-colors cursor-pointer",
+                "cursor-pointer rounded-keycap border px-4 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "border-accent-violet/50 bg-accent-violet/10 text-accent-violet"
                   : "border-base-border bg-base-panel text-ink-muted hover:border-accent-violet/40 hover:bg-base-raised hover:text-ink"
@@ -71,17 +65,11 @@ export function ProductCatalog({ products, initialCategory }: ProductCatalogProp
             <ProductCard
               key={product.id}
               product={product}
-              onSelect={(p) => setSelectedProduct(p)}
+              onSelect={(p) => openProduct(p)}
             />
           ))}
         </div>
       )}
-
-      <ProductModal
-        product={selectedProduct}
-        isOpen={!!selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
     </div>
   );
 }

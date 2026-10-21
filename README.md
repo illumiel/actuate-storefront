@@ -4,6 +4,7 @@ Next.js 14 (App Router) + TypeScript + Tailwind frontend for the
 Microservices E-Commerce System. Talks directly to all four backend
 services (Product, Pricing, Inventory, Order) from the client/server
 components - no BFF layer, kept simple for a portfolio project.
+> **Disclaimer:** Demo project for portfolio purposes only. Not affiliated with, endorsed by, or sponsored by any of the brands shown. All brand and product names are trademarks of their respective owners. No real sales or transactions take place.
 
 ## Design
 

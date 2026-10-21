@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ProductImage } from "@/components/product-image";
 import { formatPHP } from "@/lib/utils";
 import type { ProductWithPrice } from "@/types";
 
@@ -28,19 +28,12 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
     >
       <Card className="group h-full cursor-pointer relative">
         <div className="relative aspect-square overflow-hidden rounded-t-keycap bg-base-panel">
-          {product.imageUrl ? (
-            <Image
-              src={product.imageUrl}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 768px) 50vw, 25vw"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-ink-faint text-xs">
-              No image
-            </div>
-          )}
+          <ProductImage
+            src={product.imageUrl}
+            alt={product.name}
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            sizes="(max-width: 768px) 50vw, 25vw"
+          />
           {hasDiscount && (
             <Badge variant="cyan" className="absolute left-3 top-3">
               -{product.price!.discountPercent}%

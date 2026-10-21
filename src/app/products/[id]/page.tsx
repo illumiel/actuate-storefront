@@ -1,10 +1,10 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getProductWithPrice, getInventory } from "@/lib/api";
 import { Badge } from "@/components/ui/badge";
 import { AddToCart } from "@/components/add-to-cart";
+import { ProductImage } from "@/components/product-image";
 import { formatPHP } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -26,13 +26,12 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
 
       <div className="grid gap-10 sm:grid-cols-2">
         <div className="relative aspect-square overflow-hidden rounded-keycap border border-base-border bg-base-panel">
-          {product.imageUrl ? (
-            <Image src={product.imageUrl} alt={product.name} fill className="object-cover" />
-          ) : (
-            <div className="flex h-full items-center justify-center text-ink-faint text-sm">
-              No image available
-            </div>
-          )}
+          <ProductImage
+            src={product.imageUrl}
+            alt={product.name}
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
         </div>
 
         <div className="space-y-5">

@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getProductsWithPrices } from "@/lib/api";
@@ -56,6 +55,7 @@ export default async function BrandPage({ params }: { params: { brand: string } 
   }
 
   const exactBrand = brandProducts[0].brand;
+  const categoryCount = new Set(brandProducts.map((p) => p.category)).size;
 
   return (
     <div className="space-y-12">
@@ -73,9 +73,10 @@ export default async function BrandPage({ params }: { params: { brand: string } 
               <span className="glow-text">{exactBrand}</span>
             </h1>
             <p className="mt-4 text-ink-muted">
-              Gear from {exactBrand}, sourced for players who don&apos;t compromise.
+              {brandProducts.length} {brandProducts.length === 1 ? "product" : "products"} across{" "}
+              {categoryCount} {categoryCount === 1 ? "category" : "categories"} — everything we
+              carry from {exactBrand}.
             </p>
-            <p className="mt-6 text-xs text-ink-faint">Move your mouse to see the gear come alive.</p>
           </div>
           <div className="hidden h-72 lg:block" aria-hidden="true" />
         </div>

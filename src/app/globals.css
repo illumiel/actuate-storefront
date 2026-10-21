@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    /* Reserve gutter space so hiding the scrollbar (e.g. while a modal is open)
+       doesn't shift the page sideways. */
+    scrollbar-gutter: stable;
+  }
   body {
     @apply bg-base text-ink font-body antialiased;
   }
@@ -12,6 +17,20 @@
   ::selection {
     background-color: theme('colors.accent.violet');
     color: theme('colors.base.DEFAULT');
+  }
+
+  /* Keep Chrome's autofill from painting inputs light blue/white, which
+     would blow a hole in the dark theme. The huge transition delay keeps the
+     inset panel-colored shadow in place instead of letting the browser
+     animate it away. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: theme('colors.ink.DEFAULT');
+    -webkit-box-shadow: 0 0 0 1000px theme('colors.base.panel') inset;
+    box-shadow: 0 0 0 1000px theme('colors.base.panel') inset;
+    caret-color: theme('colors.ink.DEFAULT');
+    transition: background-color 600000s 0s, color 600000s 0s;
   }
 }
 
@@ -32,4 +51,53 @@
     background-clip: text;
     color: transparent;
   }
+}
+
+@keyframes badge-bump {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.35);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-badge-bump {
+  animation: badge-bump 320ms ease-out;
+}
+
+@keyframes order-check-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes order-ring {
+  from {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+
+.animate-order-check {
+  animation: order-check-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-order-ring {
+  animation: order-ring 700ms ease-out both;
 }
