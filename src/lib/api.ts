@@ -1,6 +1,6 @@
 import { API } from "./config";
 import type {
-  Product, Price, ProductWithPrice, InventoryItem, OrderResponse,
+  Product, Price, ProductWithPrice, InventoryItem, OrderResponse, PaymentMethod,
 } from "@/types";
 
 async function safeFetch<T>(url: string, options?: RequestInit): Promise<T | null> {
@@ -54,19 +54,49 @@ export interface PlaceOrderPayload {
   customerName: string;
   /** Omitted entirely when the customer doesn't provide an email. */
   customerEmail?: string;
+  /** Digits only: 09XXXXXXXXX or +639XXXXXXXXX. */
+  customerPhone: string;
+  addressLine: string;
+  barangay: string;
+  city: string;
+  province: string;
+  /** Omitted entirely when blank; exactly 4 digits when present. */
+  postalCode?: string;
+  /** Omitted entirely when blank. */
+  deliveryNotes?: string;
+  paymentMethod: PaymentMethod;
   items: { productId: number; quantity: number }[];
 }
 
-export async function placeOrder(payload: PlaceOrderPayload): Promise<{ ok: boolean; order?: OrderResponse; error?: string }> {
+export interface PlaceOrderResult {
+  ok: boolean;
+  order?: OrderResponse;
+  error?: string;
+  /** Field-level messages from a 400 response, keyed by API field name. */
+  fieldErrors?: Record<string, string>;
+}
+
+export async function placeOrder(payload: PlaceOrderPayload): Promise<PlaceOrderResult> {
   try {
     const res = await fetch(`${API.order}/api/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    const data = await res.json();
-    if (!res.ok) return { ok: false, error: data.message ?? "Failed to place order" };
-    return { ok: true, order: data as OrderResponse };
+
+    const data = (await res.json().catch(() => null)) as
+      | { message?: string; validationErrors?: Record<string, string> }
+      | null;
+
+    if (!res.ok) {
+      return {
+        ok: false,
+        error: data?.message ?? "Failed to place order",
+        fieldErrors: data?.validationErrors,
+      };
+    }
+
+    return { ok: true, order: data as unknown as OrderResponse };
   } catch {
     return { ok: false, error: "Could not reach Order Service. Is it running?" };
   }

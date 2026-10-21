@@ -50,11 +50,21 @@ export interface OrderItemResponse {
   subtotal: number;
 }
 
+export type PaymentMethod = "COD" | "GCASH" | "CARD";
+
 export interface OrderResponse {
   id: number;
   orderNumber: string;
   customerName: string;
   customerEmail?: string | null;
+  customerPhone: string;
+  addressLine: string;
+  barangay: string;
+  city: string;
+  province: string;
+  postalCode?: string | null;
+  deliveryNotes?: string | null;
+  paymentMethod: PaymentMethod;
   status: "PENDING" | "CONFIRMED" | "CANCELLED" | "COMPLETED";
   totalAmount: number;
   items: OrderItemResponse[];

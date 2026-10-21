@@ -1,7 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { ParallaxHero, type ParallaxLayer } from "@/components/parallax-hero";
+import type { ParallaxLayer } from "@/components/parallax-hero";
+import { HeroCarousel } from "@/components/hero-carousel";
+import { DepartmentRow } from "@/components/department-row";
+import { ImageMosaic } from "@/components/image-mosaic";
 import { ProductCatalog } from "@/components/product-catalog";
 import type { ProductWithPrice } from "@/types";
 
@@ -32,26 +34,32 @@ interface StorefrontProps {
 }
 
 export function Storefront({ products, initialCategory }: StorefrontProps) {
+  const parallaxContent = (
+    <div className="grid items-center gap-10 lg:grid-cols-2">
+      <div className="relative z-10 max-w-xl">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent-cyan">
+          Gear built for actuation
+        </p>
+        <h1 className="font-display text-4xl font-bold leading-tight text-ink sm:text-5xl">
+          Precision peripherals for players who{" "}
+          <span className="glow-text">notice the difference</span>.
+        </h1>
+        <p className="mt-4 text-ink-muted">
+          Switch feel, sensor accuracy, click latency, polling rate. Browse by brand or
+          filter by category to compare specs, then check out in a few clicks.
+        </p>
+      </div>
+      <div className="hidden h-72 lg:block" aria-hidden="true" />
+    </div>
+  );
+
   return (
-    <div className="space-y-12">
-      <ParallaxHero layers={heroLayers} className="py-14 sm:py-20 min-h-[440px]">
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-          <div className="relative z-10 max-w-xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent-cyan">
-              Gear built for actuation
-            </p>
-            <h1 className="font-display text-4xl font-bold leading-tight text-ink sm:text-5xl">
-              Precision peripherals for players who{" "}
-              <span className="glow-text">notice the difference</span>.
-            </h1>
-            <p className="mt-4 text-ink-muted">
-              Switch feel, sensor accuracy, click latency, polling rate. Browse by brand or
-              filter by category to compare specs, then check out in a few clicks.
-            </p>
-          </div>
-          <div className="hidden h-72 lg:block" aria-hidden="true" />
-        </div>
-      </ParallaxHero>
+    <div className="space-y-16">
+      <HeroCarousel layers={heroLayers} parallaxContent={parallaxContent} />
+
+      <DepartmentRow products={products} />
+
+      <ImageMosaic />
 
       <section className="space-y-6">
         <div className="flex items-center justify-between">
